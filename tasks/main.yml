@@ -1,0 +1,6 @@
+---
+- name: Ensure tmux is installed
+  ansible.builtin.package:
+    name: '{{ tmux_packages }}'
+    state: present
+  become: true
