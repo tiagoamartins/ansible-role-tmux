@@ -4,7 +4,11 @@ Ansible role that installs [tmux](https://github.com/tmux/tmux)
 
 ## Requirements
 
-None.
+The following executables are required for installing tmux's `terminfo`:
+
+- `gunzip` (part of `gzip` package)
+
+- `tic` (part of `ncurses` package)
 
 ## Role Variables
 

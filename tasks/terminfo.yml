@@ -1,0 +1,27 @@
+---
+- name: Create temporary download directory
+  ansible.builtin.tempfile:
+    state: directory
+    suffix: tmux
+  register: tmux_tmpdir
+
+- name: Download latest terminfo data from ncurses' website
+  ansible.builtin.get_url:
+    url: https://invisible-island.net/datafiles/current/terminfo.src.gz
+    dest: '{{ tmux_tmpdir.path }}/terminfo.src.gz'
+    mode: 0644
+
+- name: Extract terminfo data
+  ansible.builtin.command:
+    cmd: gunzip '{{ tmux_tmpdir.path }}/terminfo.src.gz'
+    creates: '{{ tmux_tmpdir.path }}/terminfo.src'
+
+- name: Compile and install terminfo
+  ansible.builtin.command:
+    cmd: tic -xe tmux-256color '{{ tmux_tmpdir.path }}/terminfo.src'
+    creates: '{{ ansible_user_dir }}/.terminfo/74/tmux-256color'
+
+- name: Remove temporary download directory
+  ansible.builtin.file:
+    path: '{{ tmux_tmpdir.path }}'
+    state: absent

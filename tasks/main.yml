@@ -4,3 +4,13 @@
     name: '{{ tmux_packages }}'
     state: present
   become: true
+
+- name: Check if tmux terminfo is supported
+  ansible.builtin.command: infocmp -x tmux-256color
+  failed_when: false
+  changed_when: false
+  register: tmux_infocmp
+
+- name: Install tmux terminfo
+  ansible.builtin.import_tasks: terminfo.yml
+  when: tmux_infocmp.rc != 0
