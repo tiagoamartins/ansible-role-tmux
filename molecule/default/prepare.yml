@@ -1,0 +1,14 @@
+---
+- name: Prepare
+  hosts: all
+
+  tasks:
+    - name: Remove tmux terminfo
+      ansible.builtin.file:
+        path: '/usr/share/terminfo/t/{{ item }}'
+        state: absent
+      loop:
+        - tmux
+        - tmux-256color
+        - tmux-direct
+      become: true
