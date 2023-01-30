@@ -7,7 +7,7 @@
 
 - name: Download latest terminfo data from ncurses' website
   ansible.builtin.get_url:
-    url: https://invisible-island.net/datafiles/current/terminfo.src.gz
+    url: '{{ tmux_terminfo_url }}'
     dest: '{{ tmux_tmpdir.path }}/terminfo.src.gz'
     mode: 0644
 
